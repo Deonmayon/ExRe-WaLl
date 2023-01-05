@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MediaPipe.HandLandmark;
-using System.Linq;
 
 public class HandLandmark : MonoBehaviour
 {
