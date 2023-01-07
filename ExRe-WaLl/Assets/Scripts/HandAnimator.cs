@@ -14,12 +14,6 @@ public class HandAnimator : MonoBehaviour
     [SerializeField] WebCamInput _webcam = null;
     [SerializeField] ResourceSet _resources = null;
     [SerializeField] bool _useAsyncReadback = true;
-    // [Space]
-    // [SerializeField] Mesh _jointMesh = null;
-    // [SerializeField] Mesh _boneMesh = null;
-    // [Space]
-    // [SerializeField] Material _jointMaterial = null;
-    // [SerializeField] Material _boneMaterial = null;
     [Space]
     [SerializeField] GameObject _Screen = null;
     [SerializeField] RawImage _monitorUI = null;
@@ -54,7 +48,7 @@ public class HandAnimator : MonoBehaviour
         _pipeline.ProcessImage(_webcam.inputImageTexture);
         if (_pipeline.Score() >= 0.10f){
 
-          menuActionController.cursor_positions = _pipeline.GetKeyPoint(8);
+          menuActionController.cursor_positions = _pipeline.GetKeyPoint(9);
         }else{
           //change to curser inactive animated
         }
