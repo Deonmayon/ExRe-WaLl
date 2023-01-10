@@ -13,6 +13,6 @@ public class MoveObstruction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += -1*Vector3.forward * Time.deltaTime * 10;
+        transform.position += -1*Vector3.forward * Time.deltaTime;
     }
 }

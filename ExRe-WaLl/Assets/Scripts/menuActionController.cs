@@ -17,12 +17,15 @@ public class menuActionController : MonoBehaviour
     [Space]
     [SerializeField] GameObject Progress_bar;
     Slider _progress;
-
+    #region Action selection
     public static string ActionMode = "idle";
     float[] index_values = new float[]{0.70f, 0.50f, 0.30f};
     float diff, max_distance = 1f, count_pause = 0f;
     int Selected_idx = 4;
-    
+    #endregion
+    bool start_hover = false;
+
+    public static float ScaleController;
     public static Vector3 cursor_positions;
     Vector3 worldPosition;
     Slider SizeControllerSlider;
@@ -55,6 +58,7 @@ public class menuActionController : MonoBehaviour
             count_pause = 0f;
             return true;
         }
+        // _progress.value = 0;
         return false;
     }
 
@@ -71,8 +75,9 @@ public class menuActionController : MonoBehaviour
     // Update is called once per frame
 
     void LateUpdate() {
-        Debug.LogFormat("{0}",ActionMode);
+        // Debug.LogFormat("{0}",ActionMode);
         // Debug.LogFormat("{0}",cursor_positions);
+        #region action menu select mode
         if(ActionMode == "idle"){          
             // see if hand is on the right side of the screen
             if(cursor_positions.x <-0.4f){
@@ -88,15 +93,16 @@ public class menuActionController : MonoBehaviour
                         Selected_idx = i;
                     }
                 }
+                start_hover = true;
                 // visualize selected menu
                 action_cursor.SetActive(true);
                 action_cursor.transform.position = action_buttons[Selected_idx].transform.position;
-                count_pause = 0f;
-            } else if (cursor_positions.x > 0.1f){
-                // hand go left to select
+            }
+            else if (cursor_positions.x > 0.1f && start_hover){
+                 //detect fist to confirm selection
                 // circular progress bar
                 if (CircularProgress(0.5f)){
-                     // changing action mode
+                    // changing action mode
                     switch (Selected_idx)
                     {
                         case 0:
@@ -111,6 +117,7 @@ public class menuActionController : MonoBehaviour
                         default:
                             break;
                     };
+                    start_hover = false;
                     action_menu_bg.GetComponent<Image>().color = new Color32(255, 255, 225, 100);
                     action_cursor.GetComponent<Image>().color = new Color32(240, 190, 0, 200);
                     _progress.value = 0;
@@ -118,11 +125,23 @@ public class menuActionController : MonoBehaviour
             }
             else{
                 count_pause = 0f;
+                _progress.value = 0;
             }
         }
+            
+        #endregion
         else if(ActionMode == "scale"){
+            SizeControllerSlider.value = ScaleController;
             float ScaleValue = SizeControllerSlider.value*1;
             PoseFigure.transform.localScale = new Vector3(ScaleValue,ScaleValue,ScaleValue);
+            if (!PoseMenuController.fingerups[2] && !PoseMenuController.fingerups[3] && !PoseMenuController.fingerups[4]){
+                if(CircularProgress(0.5f)){
+                    ActionMode = "idle";
+                }  
+            }else{
+                _progress.value = 0;
+                count_pause = 0f;
+            } 
         }
         else if(ActionMode == "move"){
             // get percentage of screen and project it to the plane
@@ -138,6 +157,14 @@ public class menuActionController : MonoBehaviour
                 PoseFigure.transform.position.z
               );
             PoseFigure.transform.position = worldPosition;
+            if (PoseMenuController.IsFisting()){
+                if(CircularProgress(0.5f)){
+                    ActionMode = "idle";
+                }
+            }else{
+                _progress.value = 0;
+                count_pause = 0f;
+            }   
         }
     }
 }
