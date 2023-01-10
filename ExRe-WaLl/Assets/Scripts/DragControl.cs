@@ -35,7 +35,6 @@ public class DragControl : MonoBehaviour
             
             // transform position from screen to world
             worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition - mousePosition);
-            //TODO: fix min y value using collider size
             worldPosition = new Vector3(worldPosition.x, Mathf.Max(worldPosition.y,0), worldPosition.z);
             transform.position = worldPosition;
         }

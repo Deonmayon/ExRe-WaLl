@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+using System.Xml.Schema;
 using System;
 using System.Drawing;
 using UnityEngine;
@@ -14,12 +16,6 @@ public class HandAnimator : MonoBehaviour
     [SerializeField] WebCamInput _webcam = null;
     [SerializeField] ResourceSet _resources = null;
     [SerializeField] bool _useAsyncReadback = true;
-    // [Space]
-    // [SerializeField] Mesh _jointMesh = null;
-    // [SerializeField] Mesh _boneMesh = null;
-    // [Space]
-    // [SerializeField] Material _jointMaterial = null;
-    // [SerializeField] Material _boneMaterial = null;
     [Space]
     [SerializeField] GameObject _Screen = null;
     [SerializeField] RawImage _monitorUI = null;
@@ -37,6 +33,28 @@ public class HandAnimator : MonoBehaviour
 
     #region MonoBehaviour implementation
 
+
+    bool isfingerUp(int idx){
+      int[] indices = new int[]{1,5,9,13,17};
+      float diff = _pipeline.GetKeyPoint(indices[idx]+3).y - _pipeline.GetKeyPoint(indices[idx]).y;
+      
+      //threshold of finger up
+      // Debug.LogFormat("{0}",Mathf.Abs(diff));
+      if(Mathf.Abs(diff) > 0.1f){
+        return true;
+      }
+      return false;
+    }
+
+    float point_distance(int idx1, int idx2){
+      float diff;
+      Vector3 point1,point2;
+      point1 = _pipeline.GetKeyPoint(idx1);
+      point2 = _pipeline.GetKeyPoint(idx2);
+      diff = Mathf.Sqrt(Mathf.Pow(point2.y-point1.y,2) + Mathf.Pow(point2.x-point1.x,2));
+      return diff;
+    }
+
     void Start(){
       _pipeline = new HandPipeline(_resources);
       _ScreenTransform = _Screen.GetComponent<RectTransform>();
@@ -53,8 +71,16 @@ public class HandAnimator : MonoBehaviour
         // Texture2D originalTexture = (Texture2D)_webcam.inputImageTexture;
         _pipeline.ProcessImage(_webcam.inputImageTexture);
         if (_pipeline.Score() >= 0.10f){
+          // get center of the hand
+          menuActionController.cursor_positions = _pipeline.GetKeyPoint(9);
+          // for finger gesture
+          for(int i = 0; i<=4; i++) {PoseMenuController.fingerups[i] = isfingerUp(i);}
+          // get distance for scaling
+          if (menuActionController.ActionMode == "scale"){
+            // update position of target point
+            menuActionController.ScaleController = point_distance(4,8);
+          }
 
-          menuActionController.cursor_positions = _pipeline.GetKeyPoint(8);
         }else{
           //change to curser inactive animated
         }
