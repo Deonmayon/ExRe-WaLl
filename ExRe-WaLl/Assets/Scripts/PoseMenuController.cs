@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class PoseMenuController : MonoBehaviour
 {
+    public OjectScriptable object_manager;
+
     [SerializeField] GameObject[] PoseButtons;
     [SerializeField] GameObject[] PoseCollection;
     GameObject PoseTemp;
@@ -18,6 +20,7 @@ public class PoseMenuController : MonoBehaviour
     Vector3 PointerPosition;
     int Selected_idx;
     float[] index_values = new float[]{0.70f, 0.50f, 0.30f};
+    public static int[] button_skin = new int[]{0,1,2};
     float diff, max_distance = 1,count_pause = 0f;
     public static bool[] fingerups = new bool[]{true, true, true, true, true};
     bool start_hover = false;
@@ -45,8 +48,18 @@ public class PoseMenuController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
+        #region generate button for pose
+        // update button skin
+        // PoseButtons for loop change
+        for(int i = 0; i < 3; i++){
+            PoseButtons[i].GetComponent<RawImage>().texture = object_manager.PosesButtons[button_skin[i]];
+        }
+        // change on select buttion use the index from button_skin
+        #endregion
+
+        #region selecting pose
         // Debug.LogFormat("{0} {1} {2} {3} {4}",fingerups[0],fingerups[1],fingerups[2],fingerups[3],fingerups[4]);
         // if Action mode is Idle then we can select the pose from the nearest x value
         if (menuActionController.ActionMode == "select"){
@@ -81,7 +94,9 @@ public class PoseMenuController : MonoBehaviour
                 if (CircularProgress(0.5f)){
                     //set pose
                     PoseTemp.SetActive(false);
-                    PoseTemp = PoseCollection[Selected_idx];
+                    // select pose // change on select buttion use the PoseTemp = object_manager.PosesSprites[button_skin[Selected_idx]]
+                    PoseTemp = object_manager.PosesSprites[button_skin[Selected_idx]];
+                    // PoseTemp = PoseCollection[Selected_idx];
                     PoseTemp.SetActive(true);
                     pose_cursor.GetComponent<Image>().color = new Color32(240, 190, 0, 200);
                     menuActionController.ActionMode = "idle";
@@ -93,5 +108,6 @@ public class PoseMenuController : MonoBehaviour
                 count_pause = 0f;
             }          
         }
+        #endregion
     }
 }
