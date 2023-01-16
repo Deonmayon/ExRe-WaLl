@@ -78,9 +78,10 @@ public class menuActionController : MonoBehaviour
         // Debug.LogFormat("{0}",ActionMode);
         // Debug.LogFormat("{0}",cursor_positions);
         #region action menu select mode
-        if(ActionMode == "idle"){          
+        if(ActionMode == "idle"){
+            Debug.LogFormat("{0}", cursor_positions);
             // see if hand is on the right side of the screen
-            if(cursor_positions.x <-0.4f){
+            if (cursor_positions.x <-0.4f){
                 // visualize menu is selected
                 action_menu_bg.GetComponent<Image>().color = new Color32(0, 255, 180, 100);
                 // for selecting which menu hand point on
@@ -88,7 +89,7 @@ public class menuActionController : MonoBehaviour
                 Debug.LogFormat("{0}",cursor_positions);
                  for(int i=0; i < index_values.Length; i++){
                     diff = Mathf.Abs(index_values[i] - (cursor_positions.y + 0.5f));
-                    if(max_distance > diff){
+                    if (max_distance > diff){
                         max_distance = diff;
                         Selected_idx = i;
                     }
@@ -124,15 +125,15 @@ public class menuActionController : MonoBehaviour
                 }
             }
             else{
-                count_pause = 0f;
-                _progress.value = 0;
+                //count_pause = 0f;
+                //_progress.value = 0;
             }
         }
             
         #endregion
         else if(ActionMode == "scale"){
             SizeControllerSlider.value = ScaleController;
-            float ScaleValue = SizeControllerSlider.value*1;
+            float ScaleValue = 1 + SizeControllerSlider.value*2;
             PoseFigure.transform.localScale = new Vector3(ScaleValue,ScaleValue,ScaleValue);
             if (!PoseMenuController.fingerups[2] && !PoseMenuController.fingerups[3] && !PoseMenuController.fingerups[4]){
                 if(CircularProgress(0.5f)){
@@ -153,9 +154,9 @@ public class menuActionController : MonoBehaviour
             x_position = Mathf.Min(x_position,ground.transform.position.x+planeCollide.bounds.size.x/2);
             worldPosition = new Vector3(
                 x_position,
-                0,
+                PoseFigure.transform.position.y,
                 PoseFigure.transform.position.z
-              );
+            );
             PoseFigure.transform.position = worldPosition;
             if (PoseMenuController.IsFisting()){
                 if(CircularProgress(0.5f)){

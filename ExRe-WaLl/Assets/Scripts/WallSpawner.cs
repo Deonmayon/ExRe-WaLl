@@ -54,14 +54,15 @@ public class WallSpawner : MonoBehaviour
             GameObject newobj = Instantiate(target_obj);
             // create button for selecting pose
             PoseMenuController.button_skin[0] = Random.Range(0,object_manager.PosesSprites.Length);
-            for (int i = 1; i > object_manager.PosesSprites.Length; i++){
+            for (int i = 1; i < object_manager.PosesSprites.Length; i++){
                 int rand_idx_button = Random.Range(0,object_manager.PosesSprites.Length);
                 // re-index if it is already in the list
-                while(!is_in(PoseMenuController.button_skin, rand_idx_button)){
+                while(is_in(PoseMenuController.button_skin, rand_idx_button)){
                     rand_idx_button = Random.Range(0,object_manager.PosesSprites.Length);
                 } 
                 // update pose
                 PoseMenuController.button_skin[i] = rand_idx_button;
+                Debug.LogFormat("{0}", PoseMenuController.button_skin);
             }
             // shuffle all button order
             Shuffle(PoseMenuController.button_skin);

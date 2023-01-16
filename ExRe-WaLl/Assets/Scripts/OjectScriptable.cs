@@ -5,5 +5,5 @@ public class OjectScriptable : ScriptableObject
 {
     public GameObject[] WallsSprites;
     public GameObject[] PosesSprites;
-    public Texture2D[] PosesButtons;
+    public Texture[] PosesButtons;
 }
