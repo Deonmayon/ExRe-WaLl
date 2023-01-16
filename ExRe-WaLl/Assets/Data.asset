@@ -17,9 +17,9 @@ MonoBehaviour:
   - {fileID: 7928621635011053725, guid: 7576e0cd33741ca42a5135cbbc2260b9, type: 3}
   - {fileID: 7928621635011053725, guid: 7576e0cd33741ca42a5135cbbc2260b9, type: 3}
   PosesSprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8956665348177755187, guid: a9b1804c896716d4fa28767e4ff56cb1, type: 3}
+  - {fileID: 2181398909905899863, guid: b402fe69b96e8d948b92cd13f25bbc31, type: 3}
+  - {fileID: 558842186111004918, guid: ac5e508a813695e48a33b5451c565794, type: 3}
   PosesButtons:
   - {fileID: 2800000, guid: 431724ab8feaeab4cb501d3b17373170, type: 3}
   - {fileID: 2800000, guid: 50c9dec19ceade541879bcb6d751c3f4, type: 3}

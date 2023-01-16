@@ -9,7 +9,6 @@ public class PoseMenuController : MonoBehaviour
     public OjectScriptable object_manager;
 
     [SerializeField] GameObject[] PoseButtons;
-    [SerializeField] GameObject[] PoseCollection;
     GameObject PoseTemp;
     [Space]
     [SerializeField] GameObject pose_menu_bg;
@@ -19,8 +18,9 @@ public class PoseMenuController : MonoBehaviour
     Slider _progress;
     Vector3 PointerPosition;
     int Selected_idx;
-    float[] index_values = new float[]{0.70f, 0.50f, 0.30f};
-    public static int[] button_skin = new int[]{0,1,2};
+    float[] index_values = new float[]{0.40f, 0f, -0.40f};
+    public int[] button_skin_temp = new int[] { -1, -1, -1 };
+    public static int[] button_skin = new int[]{-1,-1,-1};
     float diff, max_distance = 1,count_pause = 0f;
     public static bool[] fingerups = new bool[]{true, true, true, true, true};
     bool start_hover = false;
@@ -43,7 +43,6 @@ public class PoseMenuController : MonoBehaviour
     void Start()
     {
         _progress = Progress_bar.GetComponent<Slider>();
-        PoseTemp = PoseCollection[0];
         // PoseTemp.SetActive(true);
     }
 
@@ -53,8 +52,14 @@ public class PoseMenuController : MonoBehaviour
         #region generate button for pose
         // update button skin
         // PoseButtons for loop change
-        for(int i = 0; i < 3; i++){
-            PoseButtons[i].GetComponent<RawImage>().texture = object_manager.PosesButtons[button_skin[i]];
+        if ( button_skin != button_skin_temp)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Debug.LogFormat("{0} : {1}", button_skin[i], object_manager.PosesButtons[button_skin[i]]);
+                PoseButtons[i].GetComponent<RawImage>().texture = object_manager.PosesButtons[button_skin[i]];
+            }
+            button_skin_temp = button_skin;
         }
         // change on select buttion use the index from button_skin
         #endregion
@@ -71,14 +76,15 @@ public class PoseMenuController : MonoBehaviour
                 // visualizing selected menu (may be glowing panel)
                 pose_menu_bg.GetComponent<Image>().color = new Color32(0, 255, 180, 100);
                 // reset in tokens
-                max_distance = 1;
+                max_distance = 999;
                 //flag selected
                 start_hover = true;
                 //check the x position and determine which menu it is selecting
                 
-                for(int i=0; i < PoseCollection.Length; i++){
-                    diff = Mathf.Abs(index_values[i] - (PointerPosition.x + 1f)/2);
-                    if(max_distance > diff){
+                for(int i=0; i < PoseButtons.Length; i++){
+                    diff = Mathf.Abs(index_values[i] - PointerPosition.x);
+                    Debug.LogFormat("{0}", diff);
+                    if (max_distance > diff){
                         max_distance = diff;
                         Selected_idx = i;
                     }
@@ -92,20 +98,21 @@ public class PoseMenuController : MonoBehaviour
                 // visualize circular progress and change the pose
                 
                 if (CircularProgress(0.5f)){
-                    //set pose
-                    PoseTemp.SetActive(false);
+                    // destroy privious prefab
+                    Destroy(PoseTemp, .5f);
                     // select pose // change on select buttion use the PoseTemp = object_manager.PosesSprites[button_skin[Selected_idx]]
                     PoseTemp = object_manager.PosesSprites[button_skin[Selected_idx]];
                     // PoseTemp = PoseCollection[Selected_idx];
-                    PoseTemp.SetActive(true);
+                    PoseTemp = Instantiate(PoseTemp, this.gameObject.transform);
                     pose_cursor.GetComponent<Image>().color = new Color32(240, 190, 0, 200);
                     menuActionController.ActionMode = "idle";
                     pose_menu_bg.GetComponent<Image>().color = new Color32(255, 255, 225, 100);
                     start_hover = false;
+                    _progress.value = 0;
                 }
             }else{
-                _progress.value = 0;
-                count_pause = 0f;
+                // _progress.value = 0;
+                // count_pause = 0f;
             }          
         }
         #endregion
