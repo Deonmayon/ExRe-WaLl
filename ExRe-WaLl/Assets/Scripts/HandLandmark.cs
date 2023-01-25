@@ -13,7 +13,6 @@ public class HandLandmark : MonoBehaviour
     [SerializeField] RawImage inputImageUI;
     [SerializeField] Shader shader;
     [SerializeField] ResourceSet _resources = null;
-    [SerializeField, Range(0, 1)] float humanExistThreshold = 0.5f;
 
     #endregion
 

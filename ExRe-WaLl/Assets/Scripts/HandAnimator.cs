@@ -64,7 +64,10 @@ public class HandAnimator : MonoBehaviour
     void OnDestroy()
       => _pipeline.Dispose();
 
-    void LateUpdate()
+    public void dispose()
+        => _pipeline.Dispose();
+
+        void LateUpdate()
     {
         // Feed the input image to the Hand pose pipeline.
         _pipeline.UseAsyncReadback = _useAsyncReadback;
