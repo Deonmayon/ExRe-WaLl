@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4430b74d6ef2e74c9fa3fe592583018, type: 3}
+  m_Name: Data
+  m_EditorClassIdentifier: 
+  WallsSprites:
+  - {fileID: 941877008083067557, guid: 39d706c7dc872af448855e665b6b5211, type: 3}
+  - {fileID: 2319839149276842617, guid: 02df9ab309a47d7499a71f392d633fd4, type: 3}
+  - {fileID: 4765723253200520718, guid: bd026190403272d429b380eea4afe012, type: 3}
+  - {fileID: 5968589664552561005, guid: a4c571fa1665c9e45a17facf8fe25782, type: 3}
+  - {fileID: 7718578669588758930, guid: aac92df11432dd54f8077c9e80882e0a, type: 3}
+  PosesSprites:
+  - {fileID: 7425316187779366594, guid: 990bb9291cc114140be497453d86092c, type: 3}
+  - {fileID: 3889027728867073589, guid: 2453de69866deb745bacfc4e8ad3aafe, type: 3}
+  - {fileID: 5068924501064288600, guid: ac5e508a813695e48a33b5451c565794, type: 3}
+  - {fileID: 7613359758901962107, guid: d077b4f51963de34fb8986236ee55576, type: 3}
+  - {fileID: 3708887737800840604, guid: 905d8420aa6854c4e97873ff9acbf229, type: 3}
+  PosesButtons:
+  - {fileID: 2800000, guid: b879ea3f1d9956a4c8d704abf6037ac7, type: 3}
+  - {fileID: 2800000, guid: ffb9b8c7ae8b06c4d9225c3d7d1986d9, type: 3}
+  - {fileID: 2800000, guid: 1091fd30499aace48a101d44ec3df9a3, type: 3}
+  - {fileID: 2800000, guid: a43dbbea7d4b7514290e651218cb401e, type: 3}
+  - {fileID: 2800000, guid: a239d96a9d2f8ce4ab3e91c1bdb23355, type: 3}

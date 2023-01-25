@@ -9,7 +9,8 @@ public class PoseMenuController : MonoBehaviour
     public OjectScriptable object_manager;
 
     [SerializeField] GameObject[] PoseButtons;
-    GameObject PoseTemp;
+    public static GameObject PoseTemp;
+    public static GameObject pose_idle;
     [Space]
     [SerializeField] GameObject pose_menu_bg;
     [SerializeField] GameObject pose_cursor;
@@ -43,6 +44,7 @@ public class PoseMenuController : MonoBehaviour
     void Start()
     {
         _progress = Progress_bar.GetComponent<Slider>();
+        pose_idle = GameObject.Find("idle_pose");
         // PoseTemp.SetActive(true);
     }
 
@@ -52,11 +54,11 @@ public class PoseMenuController : MonoBehaviour
         #region generate button for pose
         // update button skin
         // PoseButtons for loop change
-        if ( button_skin != button_skin_temp)
+        if (!WallSpawner.is_create)
         {
             for (int i = 0; i < 3; i++)
             {
-                Debug.LogFormat("{0} : {1}", button_skin[i], object_manager.PosesButtons[button_skin[i]]);
+                //Debug.LogFormat("{0} : {1}", button_skin[i], object_manager.PosesButtons[button_skin[i]]);
                 PoseButtons[i].GetComponent<RawImage>().texture = object_manager.PosesButtons[button_skin[i]];
             }
             button_skin_temp = button_skin;
@@ -70,7 +72,7 @@ public class PoseMenuController : MonoBehaviour
         if (menuActionController.ActionMode == "select"){
             // get hand location
             PointerPosition = menuActionController.cursor_positions;
-            Debug.LogFormat("{0}",PointerPosition);
+            // Debug.LogFormat("{0}",PointerPosition);
             // check y position if It is hovering at pose menu
             if (PointerPosition.y >= 0.25){
                 // visualizing selected menu (may be glowing panel)
@@ -83,7 +85,7 @@ public class PoseMenuController : MonoBehaviour
                 
                 for(int i=0; i < PoseButtons.Length; i++){
                     diff = Mathf.Abs(index_values[i] - PointerPosition.x);
-                    Debug.LogFormat("{0}", diff);
+                    //Debug.LogFormat("{0}", diff);
                     if (max_distance > diff){
                         max_distance = diff;
                         Selected_idx = i;
@@ -94,11 +96,10 @@ public class PoseMenuController : MonoBehaviour
                 // move panel position
                 pose_cursor.transform.position = PoseButtons[Selected_idx].transform.position;
             // confirm selected pose by lower all finger in to fist
-            } else if (PointerPosition.y <= -0.3f && start_hover){
+            } else if (PointerPosition.y <= -0.1f && start_hover){
                 // visualize circular progress and change the pose
-                
                 if (CircularProgress(0.5f)){
-                    // destroy privious prefab
+                    // destroy privious pose prefab
                     Destroy(PoseTemp, .5f);
                     // select pose // change on select buttion use the PoseTemp = object_manager.PosesSprites[button_skin[Selected_idx]]
                     PoseTemp = object_manager.PosesSprites[button_skin[Selected_idx]];
@@ -109,6 +110,8 @@ public class PoseMenuController : MonoBehaviour
                     pose_menu_bg.GetComponent<Image>().color = new Color32(255, 255, 225, 100);
                     start_hover = false;
                     _progress.value = 0;
+                    // set idle temp off
+                    pose_idle.SetActive(false);
                 }
             }else{
                 // _progress.value = 0;

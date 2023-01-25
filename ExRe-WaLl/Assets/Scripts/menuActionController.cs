@@ -79,14 +79,14 @@ public class menuActionController : MonoBehaviour
         // Debug.LogFormat("{0}",cursor_positions);
         #region action menu select mode
         if(ActionMode == "idle"){
-            Debug.LogFormat("{0}", cursor_positions);
+            //Debug.LogFormat("{0}", cursor_positions);
             // see if hand is on the right side of the screen
             if (cursor_positions.x <-0.4f){
                 // visualize menu is selected
                 action_menu_bg.GetComponent<Image>().color = new Color32(0, 255, 180, 100);
                 // for selecting which menu hand point on
                 max_distance = 1f;
-                Debug.LogFormat("{0}",cursor_positions);
+                // Debug.LogFormat("{0}",cursor_positions);
                  for(int i=0; i < index_values.Length; i++){
                     diff = Mathf.Abs(index_values[i] - (cursor_positions.y + 0.5f));
                     if (max_distance > diff){
@@ -133,10 +133,11 @@ public class menuActionController : MonoBehaviour
         #endregion
         else if(ActionMode == "scale"){
             SizeControllerSlider.value = ScaleController;
-            float ScaleValue = 1 + SizeControllerSlider.value*2;
+            float ScaleValue = 0.5f + SizeControllerSlider.value*2;
             PoseFigure.transform.localScale = new Vector3(ScaleValue,ScaleValue,ScaleValue);
             if (!PoseMenuController.fingerups[2] && !PoseMenuController.fingerups[3] && !PoseMenuController.fingerups[4]){
                 if(CircularProgress(0.5f)){
+                    SizeController.SetActive(false);
                     ActionMode = "idle";
                 }  
             }else{
@@ -146,7 +147,7 @@ public class menuActionController : MonoBehaviour
         }
         else if(ActionMode == "move"){
             // get percentage of screen and project it to the plane
-            Debug.LogFormat(" in world position{0}",cursor_positions);
+            //Debug.LogFormat(" in world position{0}",cursor_positions);
             float x_position = -cursor_positions.x*planeCollide.bounds.size.x;
             // normalize lowwer bound
             x_position = Mathf.Max(x_position,ground.transform.position.x-planeCollide.bounds.size.x/2);
